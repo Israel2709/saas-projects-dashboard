@@ -9,28 +9,31 @@ export default async function ProjectDetailPage({
   params,
   searchParams,
 }: {
-  params: { id: string };
-  searchParams?: Record<string, string | string[]>;
+  params: Promise<{ id: string }>;
+  searchParams?: Promise<Record<string, string | string[]>>;
 }) {
+  const { id } = await params;
+  const resolvedSearchParams = searchParams ? await searchParams : {};
+
   const project = await prisma.project.findUnique({
-    where: { id: params.id },
+    where: { id },
   });
 
   if (!project) return notFound();
 
-  const page = parseInt(searchParams?.page as string) || 1;
+  const page = parseInt(resolvedSearchParams?.page as string) || 1;
   const pageSize = 10;
   const skip = (page - 1) * pageSize;
 
   const events = await prisma.event.findMany({
-    where: { projectId: params.id },
+    where: { projectId: id },
     orderBy: { createdAt: "desc" },
     skip,
     take: pageSize,
   });
 
   const totalEvents = await prisma.event.count({
-    where: { projectId: params.id },
+    where: { projectId: id },
   });
 
   const totalPages = Math.ceil(totalEvents / pageSize);
@@ -50,7 +53,7 @@ export default async function ProjectDetailPage({
         </Link>
 
         <Link
-          href={`/dashboard/projects/${project.id}/delete`}
+          href={`/dashboard/projects/${id}/delete`}
           className="text-sm bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700 inline-flex items-center gap-1"
         >
           <HiTrash /> Delete
