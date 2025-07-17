@@ -1,10 +1,15 @@
-import { PrismaClient } from '@prisma/client'
+import { PrismaClient } from "@prisma/client";
 
-const prisma = new PrismaClient()
+if (process.env.NODE_ENV === "production") {
+  console.warn("⛔ Seed script should not be executed in production.");
+  process.exit(0);
+}
+
+const prisma = new PrismaClient();
 
 async function main() {
-  await prisma.event.deleteMany()
-  await prisma.project.deleteMany()
+  await prisma.event.deleteMany();
+  await prisma.project.deleteMany();
 
   for (let i = 1; i <= 3; i++) {
     const project = await prisma.project.create({
@@ -12,7 +17,7 @@ async function main() {
         name: `Project ${i}`,
         description: `Project description ${i}`,
       },
-    })
+    });
 
     const events = Array.from({ length: 20 }).map((_, j) => ({
       type: `event.type.${j + 1}`,
@@ -21,17 +26,17 @@ async function main() {
         detail: `Event sample ${j + 1} for Project ${i}`,
       },
       projectId: project.id,
-    }))
+    }));
 
-    await prisma.event.createMany({ data: events })
+    await prisma.event.createMany({ data: events });
   }
 
-  console.log('✅ Seed completed succesfully.')
+  console.log("✅ Seed completed succesfully.");
 }
 
 main()
   .catch((e) => {
-    console.error(e)
-    process.exit(1)
+    console.error(e);
+    process.exit(1);
   })
-  .finally(() => prisma.$disconnect())
+  .finally(() => prisma.$disconnect());
