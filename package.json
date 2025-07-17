@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "pnpm seed:ifneeded && next dev",
+    "dev": "pnpm next dev",
     "seed": "pnpm exec tsx scripts/seed.ts",
     "seed:ifneeded": "node scripts/seed-if-needed.js",
     "db:reset": "rm -f prisma/dev.db && pnpm migrate && pnpm seed",
