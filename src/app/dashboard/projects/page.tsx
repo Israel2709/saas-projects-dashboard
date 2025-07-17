@@ -6,12 +6,18 @@ import { HiCheckCircle } from "react-icons/hi";
 export default async function ProjectsPage({
   searchParams,
 }: {
-  searchParams?: Record<string, string | string[]>;
+  searchParams?: Promise<Record<string, string | string[]>>;
 }) {
+  const resolvedSearchParams = searchParams ? await searchParams : {};
+
   const sort =
-    typeof searchParams?.sort === "string" ? searchParams.sort : undefined;
+    typeof resolvedSearchParams.sort === "string"
+      ? resolvedSearchParams.sort
+      : undefined;
   const order =
-    typeof searchParams?.order === "string" ? searchParams.order : undefined;
+    typeof resolvedSearchParams.order === "string"
+      ? resolvedSearchParams.order
+      : undefined;
 
   const sortBy = sort === "name" || sort === "createdAt" ? sort : "createdAt";
   const sortOrder = order === "asc" || order === "desc" ? order : "desc";
@@ -22,8 +28,8 @@ export default async function ProjectsPage({
     },
   });
 
-  const showCreated = searchParams?.created === "1";
-  const showDeleted = searchParams?.deleted === "1";
+  const showCreated = resolvedSearchParams.created === "1";
+  const showDeleted = resolvedSearchParams.deleted === "1";
 
   const cleanUrl = "/dashboard/projects";
 

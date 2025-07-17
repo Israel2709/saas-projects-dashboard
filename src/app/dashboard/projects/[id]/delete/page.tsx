@@ -5,10 +5,12 @@ import { deleteProject } from "../actions";
 export default async function ConfirmDeletePage({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) {
+  const { id } = await params;
+
   const project = await prisma.project.findUnique({
-    where: { id: params.id },
+    where: { id },
   });
 
   if (!project) {
@@ -24,10 +26,7 @@ export default async function ConfirmDeletePage({
         and cannot be undone.
       </p>
 
-      <form
-        action={deleteProject.bind(null, project.id)}
-        className="flex gap-3"
-      >
+      <form action={deleteProject.bind(null, id)} className="flex gap-3">
         <button
           type="submit"
           className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 text-sm"
@@ -35,7 +34,7 @@ export default async function ConfirmDeletePage({
           Confirm Delete
         </button>
         <Link
-          href={`/dashboard/projects/${project.id}`}
+          href={`/dashboard/projects/${id}`}
           className="px-4 py-2 text-sm border rounded hover:bg-zinc-100 dark:hover:bg-zinc-800"
         >
           Cancel
