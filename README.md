@@ -1,36 +1,138 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# SaaS Projects Dashboard
 
-## Getting Started
+This is a modern full-stack web app built with **Next.js 15 (App Router)**, **Tailwind CSS**, **PostgreSQL (via Railway)**, and **Prisma ORM**. It allows you to manage projects, view details, and log events per project.
 
-First, run the development server:
+---
+
+## 🚀 Quick Start
+
+### 1. Clone the repository
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/Israel2709/saas-projects-dashboard.git
+cd saas-projects-dashboard
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2. Install dependencies
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+pnpm install
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 3. Set up the environment variables
 
-## Learn More
+```bash
+cp .env.example .env
+```
 
-To learn more about Next.js, take a look at the following resources:
+Update the `DATABASE_URL` in `.env` with your PostgreSQL connection string.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 4. Set up the database
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+pnpm prisma migrate dev --name init
+```
 
-## Deploy on Vercel
+### 5. (Optional) Seed the database
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```bash
+pnpm seed
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### 6. Run the development server
+
+```bash
+pnpm dev
+```
+
+---
+
+## 🗃️ Database Setup
+
+- **Database**: PostgreSQL (recommended via [Railway](https://railway.app))
+- **ORM**: Prisma
+
+### Required `.env` variable:
+
+```env
+DATABASE_URL=postgresql://user:password@host:port/dbname
+```
+
+---
+
+## 🧱 Architecture Notes
+
+This project is structured using the **Next.js App Router**, embracing server components, route handlers, and file-based routing for both UI and API logic.
+
+### Key tech stack:
+
+- **Next.js 15**: `app/` directory with route-based layout
+- **Tailwind CSS**: for styling and dark/light mode support
+- **Prisma**: database migrations and ORM
+- **React Icons**: for consistent UI elements
+
+### Folder Structure:
+
+```
+├── app/
+│   ├── dashboard/
+│   │   ├── projects/
+│   │   │   └── [id]/
+│   │   │       ├── page.tsx
+│   │   │       └── delete/page.tsx
+│   │   └── create/page.tsx
+│   └── api/
+│       └── projects/[id]/events/route.ts
+├── components/
+├── lib/
+├── prisma/
+├── scripts/
+```
+
+---
+
+## 🧪 API Examples
+
+### Create Event for Project
+
+**Endpoint**: `POST /api/projects/:id/events`
+
+**Request body:**
+
+```json
+{
+  "type": "deploy",
+  "payload": {
+    "branch": "main",
+    "status": "success"
+  }
+}
+```
+
+**cURL Example:**
+
+```bash
+curl -X POST http://localhost:3000/api/projects/abc123/events \
+  -H "Content-Type: application/json" \
+  -d '{"type": "deploy", "payload": {"branch": "main", "status": "success"}}'
+```
+
+---
+
+## 🛠 Useful Commands
+
+| Command                   | Description                     |
+| ------------------------- | ------------------------------- |
+| `pnpm dev`                | Start local development server  |
+| `pnpm build`              | Create production build         |
+| `pnpm prisma studio`      | Open Prisma Studio (GUI for DB) |
+| `pnpm seed`               | Run seed script                 |
+| `pnpm prisma migrate dev` | Run migrations in development   |
+
+---
+
+## 📦 Deployment
+
+Deployment is handled via **Vercel**. Ensure you add the `DATABASE_URL` to your Vercel project’s environment variables.
+
+---
