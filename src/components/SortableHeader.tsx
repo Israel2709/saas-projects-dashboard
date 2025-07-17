@@ -1,5 +1,5 @@
-import { HiSortAscending, HiSortDescending, HiSelector } from "react-icons/hi";
 import Link from "next/link";
+import { HiSortAscending, HiSortDescending, HiSelector } from "react-icons/hi";
 
 type Props = {
   label: string;
@@ -15,8 +15,8 @@ export default function SortableHeader({
   currentOrder,
 }: Props) {
   const isActive = currentSort === field;
-  const newOrder = isActive && currentOrder === "asc" ? "desc" : "asc";
-  const url = `/dashboard/projects?sort=${field}&order=${newOrder}`;
+  const nextOrder = isActive && currentOrder === "asc" ? "desc" : "asc";
+  const url = `/dashboard/projects?sort=${field}&order=${nextOrder}`;
 
   let icon = <HiSelector className="inline text-zinc-400" size={16} />;
   if (isActive) {

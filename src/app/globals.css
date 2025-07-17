@@ -5,13 +5,30 @@
   --foreground: #171717;
 }
 
-/* Tema oscuro automático */
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
   }
 }
+
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    display: none;
+  }
+}
+
+.animate-fade-out {
+  animation: fadeOut 4s forwards;
+}
+
 
 body {
   background: var(--background);
