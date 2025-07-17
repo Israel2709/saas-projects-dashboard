@@ -1,6 +1,6 @@
+import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { deleteProject } from "../actions";
-import Link from "next/link";
 
 export default async function ConfirmDeletePage({
   params,

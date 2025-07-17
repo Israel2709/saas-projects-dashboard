@@ -12,5 +12,5 @@ export async function deleteProject(id: string) {
     where: { id },
   });
 
-  redirect("/dashboard/projects?deleted=true");
+  redirect("/dashboard/projects?deleted=1");
 }

@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { HiArrowLeft, HiTrash } from "react-icons/hi";
 import Head from "next/head";
+import { formatDate } from "@/lib/formatDate";
 
 export default async function ProjectDetailPage({
   params,
@@ -78,9 +79,7 @@ export default async function ProjectDetailPage({
               <td className="p-2 whitespace-pre-wrap break-all text-zinc-600 dark:text-zinc-300">
                 <pre>{JSON.stringify(event.payload, null, 2)}</pre>
               </td>
-              <td className="p-2">
-                {new Date(event.createdAt).toLocaleString()}
-              </td>
+              <td className="p-2">{formatDate(event.createdAt)}</td>
             </tr>
           ))}
         </tbody>
